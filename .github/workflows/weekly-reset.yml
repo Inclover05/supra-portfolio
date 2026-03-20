@@ -1,0 +1,17 @@
+name: Sunday Grid Reset Protocol
+
+on:
+  schedule:
+    # This cron syntax means: Minute 0, Hour 0 (12 AM UTC), Any Day of Month, Any Month, Day 0 (Sunday)
+    - cron: '0 0 * * 0'
+  workflow_dispatch: # Allows you to trigger the wipe manually if needed
+
+jobs:
+  wipe-database:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Execute Supabase Database Wipe
+        run: |
+          curl -X DELETE "${{ secrets.VITE_SUPABASE_URL }}/rest/v1/weekly_intelligence?id=not.eq.00000000-0000-0000-0000-000000000000" \
+          -H "apikey: ${{ secrets.VITE_SUPABASE_ANON_KEY }}" \
+          -H "Authorization: Bearer ${{ secrets.VITE_SUPABASE_ANON_KEY }}"
