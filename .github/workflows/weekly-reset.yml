@@ -2,9 +2,8 @@ name: Sunday Grid Reset Protocol
 
 on:
   schedule:
-    # This cron syntax means: Minute 0, Hour 0 (12 AM UTC), Any Day of Month, Any Month, Day 0 (Sunday)
     - cron: '0 0 * * 0'
-  workflow_dispatch: # Allows you to trigger the wipe manually if needed
+  workflow_dispatch: 
 
 jobs:
   wipe-database:
