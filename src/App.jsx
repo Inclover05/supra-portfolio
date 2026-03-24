@@ -378,6 +378,13 @@ export default function App() {
   if (isArchitect) return <AdminDashboard />;
 
   const fetchWeeklyIntelligence = async () => {
+    // HARDENED GUARD: If Supabase failed to initialize, do not crash the React app.
+    if (!supabase) {
+      console.error("Supabase client is not available. Check environment variables.");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from('weekly_intelligence')
@@ -387,6 +394,7 @@ export default function App() {
       setProtocols(data || []);
     } catch (error) {
       console.error("Error fetching data from Supabase:", error.message);
+      setProtocols([]);
     } finally {
       setIsLoading(false);
     }
