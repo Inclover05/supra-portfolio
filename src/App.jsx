@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, X, Send, Zap, Loader2, Database as DbIcon, PowerOff, Search, Users } from 'lucide-react';
 import Hero3D from './Hero3D';
-import { supabase } from './supabase'; 
+import { supabase } from './Supabase'; 
 
 /* --- SECURE DATA INJECTION: SPREADSHEET EXTRACT --- */
 const DISCORD_COMMUNITIES = [
