@@ -1,3 +1,5 @@
+console.log("DEBUG: URL is", import.meta.env.VITE_SUPABASE_URL);
+console.log("DEBUG: KEY is", import.meta.env.VITE_SUPABASE_ANON_KEY);
 import { createClient } from '@supabase/supabase-js'
 
 // We MUST use import.meta.env for Vite projects on Vercel
