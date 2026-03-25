@@ -3,8 +3,11 @@ import AdminPanel from './AdminPanel';
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, X, Send, Zap, Loader2, Database as DbIcon, PowerOff, Search, Users } from 'lucide-react';
-import Hero3D from './Hero3D';
 import { supabase } from './Supabase'; 
+import { ErrorBoundary } from './ErrorBoundary';
+
+// THE ARCHITECT FIX: Lazy load the 3D Engine into its own chunk
+const Hero3D = React.lazy(() => import('./Hero3D'));
 
 /* --- SECURE DATA INJECTION: SPREADSHEET EXTRACT --- */
 const DISCORD_COMMUNITIES = [
@@ -378,7 +381,6 @@ export default function App() {
   if (isArchitect) return <AdminDashboard />;
 
   const fetchWeeklyIntelligence = async () => {
-    // HARDENED GUARD: If Supabase failed to initialize, do not crash the React app.
     if (!supabase) {
       console.error("Supabase client is not available. Check environment variables.");
       setIsLoading(false);
@@ -460,7 +462,12 @@ export default function App() {
       
       {hasEntered && (
         <div className="fixed inset-0 z-0 pointer-events-auto">
-          <Hero3D />
+          {/* THE BLAST SHIELD: Stops 3D crashes from killing the React Root */}
+          <ErrorBoundary>
+            <React.Suspense fallback={<div className="absolute inset-0 bg-[#02040a]" />}>
+              <Hero3D />
+            </React.Suspense>
+          </ErrorBoundary>
         </div>
       )}
       
