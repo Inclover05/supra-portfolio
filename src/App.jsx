@@ -83,7 +83,7 @@ const ContactBar = () => (
     initial={{ y: 100, opacity: 0 }}
     animate={{ y: 0, opacity: 1 }}
     transition={{ delay: 2, duration: 1 }}
-    className="fixed bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2 z-40 w-max max-w-[95vw] pointer-events-auto"
+    className="fixed bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2 z-50 w-max max-w-[95vw] pointer-events-auto"
   >
     <div className="flex items-center gap-3 md:gap-5 px-5 md:px-8 py-3 md:py-4 bg-[#020817] border-2 border-cyan-400 rounded-full shadow-[0_0_40px_rgba(34,211,238,0.5)] hover:shadow-[0_0_60px_rgba(34,211,238,0.7)] transition-all duration-300 hover:-translate-y-1">
       <a 
@@ -129,7 +129,8 @@ const AboutSection = () => (
         </div>
       </div>
 
-      <h3 className="text-4xl md:text-6xl font-syne font-extrabold text-white mb-6 md:mb-8 leading-[1.1] tracking-tight">
+      {/* ARCHITECT FIX: Added mt-8 to prevent text from overlapping the profile image on narrow screens */}
+      <h3 className="mt-8 text-4xl md:text-6xl font-syne font-extrabold text-white mb-6 md:mb-8 leading-[1.1] tracking-tight">
         Decoding the Signal <br />
         <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
           From the Noise.
@@ -489,7 +490,8 @@ export default function App() {
 
         <AboutSection />
 
-        <section className="px-6 md:px-12 pb-32 pt-10 md:pt-20 bg-gradient-to-b from-transparent via-[#02040a]/90 to-[#02040a] pointer-events-auto backdrop-blur-sm">
+        {/* ARCHITECT FIX: Added massive padding-bottom (pb-[30vh]) to allow the user to scroll entirely past the contact bar */}
+        <section className="px-6 md:px-12 pb-[30vh] pt-10 md:pt-20 bg-gradient-to-b from-transparent via-[#02040a]/90 to-[#02040a] pointer-events-auto backdrop-blur-sm">
           <div className="max-w-7xl mx-auto">
             
             <div className="mb-10">
@@ -594,14 +596,14 @@ export default function App() {
 
         <ContactBar />
         
-        {/* DESIGN UPGRADE: Glassmorphic Glowing Cyber-Pill */}
+        {/* ARCHITECT FIX: Locked permanently to the Top-Right on mobile, Bottom-Right on Desktop. It will NEVER touch the Contact bar again. */}
         <motion.button
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           whileHover={{ scale: 1.05, y: -5 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setIsDossierOpen(true)}
-          className="fixed bottom-24 md:bottom-8 right-6 md:right-8 z-40 bg-black/60 backdrop-blur-md border border-cyan-500/50 text-cyan-400 px-6 py-3.5 md:px-8 md:py-4 rounded-full shadow-[0_0_20px_rgba(6,182,212,0.2),inset_0_0_15px_rgba(6,182,212,0.1)] hover:shadow-[0_0_30px_rgba(6,182,212,0.4),inset_0_0_20px_rgba(6,182,212,0.2)] hover:border-cyan-300 hover:bg-cyan-950/40 transition-all duration-300 pointer-events-auto flex items-center justify-center gap-3 group"
+          className="fixed top-6 right-6 md:top-auto md:bottom-8 md:right-8 z-50 bg-black/60 backdrop-blur-md border border-cyan-500/50 text-cyan-400 px-6 py-3.5 md:px-8 md:py-4 rounded-full shadow-[0_0_20px_rgba(6,182,212,0.2),inset_0_0_15px_rgba(6,182,212,0.1)] hover:shadow-[0_0_30px_rgba(6,182,212,0.4),inset_0_0_20px_rgba(6,182,212,0.2)] hover:border-cyan-300 hover:bg-cyan-950/40 transition-all duration-300 pointer-events-auto flex items-center justify-center gap-3 group"
           title="View My Communities"
         >
           <Users size={20} className="group-hover:text-white transition-colors" />
