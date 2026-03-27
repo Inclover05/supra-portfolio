@@ -6,7 +6,7 @@ import { ArrowUpRight, X, Send, Zap, Loader2, Database as DbIcon, PowerOff, Sear
 import { supabase } from './Supabase'; 
 import { ErrorBoundary } from './ErrorBoundary';
 
-// THE ARCHITECT FIX: Lazy load the 3D Engine into its own chunk
+// Lazy loading our new 2.5D Engine
 const Hero3D = React.lazy(() => import('./Hero3D'));
 
 /* --- SECURE DATA INJECTION: SPREADSHEET EXTRACT --- */
@@ -83,10 +83,8 @@ const ContactBar = () => (
     initial={{ y: 100, opacity: 0 }}
     animate={{ y: 0, opacity: 1 }}
     transition={{ delay: 2, duration: 1 }}
-    // ARCHITECT FIX: Elevated to bottom-8 (mobile) and bottom-10 (desktop) to clear iOS/Android safe areas
     className="fixed bottom-8 md:bottom-10 left-1/2 transform -translate-x-1/2 z-50 w-max max-w-[95vw] pointer-events-auto"
   >
-    {/* ARCHITECT FIX: Added backdrop-blur-md and refined padding for a perfect pill shape */}
     <div className="flex items-center gap-3 md:gap-5 px-6 py-3.5 md:px-8 md:py-4 bg-[#020817]/90 backdrop-blur-md border-2 border-cyan-400 rounded-full shadow-[0_0_40px_rgba(34,211,238,0.5)] hover:shadow-[0_0_60px_rgba(34,211,238,0.7)] transition-all duration-300 hover:-translate-y-1">
       <a 
         href="https://x.com/supraEVM"
@@ -436,7 +434,6 @@ export default function App() {
     return { highestFunded, otherProtocols, nfts };
   }, [protocols]);
 
-  // Dynamic filter for the Discord communities search bar
   const filteredCommunities = useMemo(() => {
     return DISCORD_COMMUNITIES.filter(community => 
       community.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -630,7 +627,6 @@ export default function App() {
               transition={{ type: "spring", stiffness: 250, damping: 20 }}
               className="bg-[#020817]/95 border-2 border-cyan-500/50 rounded-2xl w-full max-w-3xl h-[75vh] flex flex-col shadow-[0_0_60px_rgba(6,182,212,0.3)] relative overflow-hidden"
             >
-              {/* Header */}
               <div className="flex justify-between items-center p-6 border-b border-cyan-900/50 bg-black/40">
                 <div>
                   <h2 className="text-2xl font-syne font-bold text-white tracking-wide">My Communities</h2>
@@ -644,15 +640,11 @@ export default function App() {
                 </button>
               </div>
 
-              {/* Data Content */}
               <div className="flex-1 overflow-hidden flex flex-col p-6 md:p-8">
-                
-                {/* Intro Copy */}
                 <p className="text-gray-400 font-space text-sm mb-6 leading-relaxed">
                   Here are all the Discord communities I am active in. This is where I post my alpha calls and highlight new, early-stage projects.
                 </p>
 
-                {/* Search Bar */}
                 <div className="relative mb-6">
                   <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-cyan-500/50" size={18} />
                   <input 
@@ -664,7 +656,6 @@ export default function App() {
                   />
                 </div>
 
-                {/* Staggered Grid */}
                 <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 pb-4">
                   <motion.div 
                     initial="hidden"
@@ -708,7 +699,6 @@ export default function App() {
                     )}
                   </motion.div>
                 </div>
-
               </div>
             </motion.div>
           </motion.div>

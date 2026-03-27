@@ -1,102 +1,49 @@
-import React, { Suspense, useState, useEffect } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, useGLTF, Environment, Float, Sparkles, Html, useProgress } from '@react-three/drei';
-import { getGPUTier } from 'detect-gpu';
-
-// The Decryption Loader - Prevents the "frozen" feeling while 42MB parses
-function CanvasLoader() {
-  const { progress } = useProgress();
-  return (
-    <Html center>
-      <div className="flex flex-col items-center justify-center p-6 bg-[#02040a]/90 border border-cyan-500/30 rounded-xl backdrop-blur-md shadow-[0_0_30px_rgba(6,182,212,0.2)]">
-        <div className="w-8 h-8 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin mb-4" />
-        <span className="text-cyan-400 font-space text-xs tracking-[0.2em] uppercase font-bold">
-          Decrypting Asset {progress.toFixed(0)}%
-        </span>
-      </div>
-    </Html>
-  );
-}
-
-// The 3D Engine - Only boots if the GPU is cleared for heavy lifting
-function TheArchitect3D() {
-  const { scene } = useGLTF('/hitem3d.glb');
-
-  return (
-    <Float speed={2} rotationIntensity={0.3} floatIntensity={0.6}>
-      <primitive object={scene} scale={2} position={[0, -1, 0]} />
-    </Float>
-  );
-}
-
-// The Mobile Fallback - Instant load, zero VRAM cost
-function MobileFallback() {
-  return (
-    <div className="absolute inset-0 flex items-center justify-center z-0">
-      <img
-        src="/samurai.jpg"
-        alt="Storm Warrior"
-        className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-luminosity"
-      />
-      {/* Cinematic lighting overlay to match the 3D scene's mood */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#030303]/90 via-transparent to-[#030303]" />
-      
-      {/* Simulated 3D Sparkles using basic CSS for mobile */}
-      <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(circle at center, #00f6ff 1px, transparent 2px)', backgroundSize: '40px 40px' }} />
-    </div>
-  );
-}
+import React from 'react';
+import { motion } from 'framer-motion';
 
 export default function Hero3D() {
-  const [gpuTier, setGpuTier] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      const tier = await getGPUTier();
-      setGpuTier(tier);
-    })();
-  }, []);
-
-  // Render a dark void while the system interrogates the hardware
-  if (!gpuTier) {
-    return <div className="h-screen w-full absolute inset-0 z-0 bg-[#030303]" />;
-  }
-
-  // THE LOGIC GATE: Only route to the fallback if it is strictly a mobile device.
-  // We trust all desktop setups (even laptops on integrated graphics) to handle the load.
-  const isMobile = gpuTier.isMobile;
-
   return (
-    <div className="h-screen w-full absolute inset-0 z-0 bg-[#030303] pointer-events-none">
+    <div className="h-screen w-full absolute inset-0 z-0 bg-[#02040a] overflow-hidden pointer-events-none">
       
-      {isMobile ? (
-        <MobileFallback />
-      ) : (
-        <Canvas camera={{ position: [0, 0, 6], fov: 45 }}>
-          {/* Replaced 'null' with our custom CanvasLoader */}
-          <Suspense fallback={<CanvasLoader />}>
-            <ambientLight intensity={0.2} color="#0a192f" />
-            <directionalLight position={[10, 10, 5]} intensity={1.5} color="#00f6ff" />
-            <directionalLight position={[-10, -10, -5]} intensity={1.2} color="#1d4ed8" />
-            <Environment preset="night" />
-            <Sparkles count={150} scale={12} size={2.5} speed={0.5} opacity={0.4} color="#00f6ff" />
-            
-            <TheArchitect3D />
-            
-            <OrbitControls
-              enableZoom={false}
-              maxPolarAngle={Math.PI / 2 + 0.1}
-              minPolarAngle={Math.PI / 2 - 0.5}
-              autoRotate
-              autoRotateSpeed={0.8}
-              makeDefault
-            />
-          </Suspense>
-        </Canvas>
-      )}
+      {/* 1. The Base Image: Slow, infinite scale (Ken Burns effect) for a 3D breathing feel */}
+      <motion.div
+        initial={{ scale: 1 }}
+        animate={{ scale: 1.15 }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "linear"
+        }}
+        className="absolute inset-0 w-full h-full"
+      >
+        <img 
+          src="/samurai.jpg" 
+          alt="Storm Warrior" 
+          className="w-full h-full object-cover opacity-30 mix-blend-luminosity"
+        />
+      </motion.div>
 
-      {/* Sleek fade at the bottom to blend into the dark website */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#030303]/40 to-[#030303] pointer-events-none" />
+      {/* 2. The Atmospheric Gradients: Deep Ocean Blue to Void Black */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-[#02040a] via-blue-950/20 to-cyan-950/10 mix-blend-overlay" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#02040a]/80 to-[#02040a]" />
+
+      {/* 3. The Digital Rain / Particle Overlay (Zero CPU cost CSS pattern) */}
+      <div 
+        className="absolute inset-0 opacity-20 mix-blend-screen"
+        style={{ 
+          backgroundImage: 'radial-gradient(circle at center, #00f6ff 1px, transparent 1px)', 
+          backgroundSize: '48px 48px' 
+        }} 
+      />
+
+      {/* 4. Scanning Line Animation for the terminal aesthetic */}
+      <motion.div 
+        className="absolute top-0 left-0 w-full h-1 bg-cyan-500/20 blur-[2px]"
+        animate={{ top: ['0%', '100%'] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+      />
+      
     </div>
   );
 }
