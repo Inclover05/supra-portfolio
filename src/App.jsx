@@ -6,7 +6,7 @@ import { ArrowUpRight, X, Send, Zap, Loader2, Database as DbIcon, PowerOff, Sear
 import { supabase } from './Supabase'; 
 import { ErrorBoundary } from './ErrorBoundary';
 
-// Lazy loading our new 2.5D Engine
+// Lazy loading our 2.5D Engine
 const Hero3D = React.lazy(() => import('./Hero3D'));
 
 /* --- SECURE DATA INJECTION: SPREADSHEET EXTRACT --- */
@@ -83,16 +83,17 @@ const ContactBar = () => (
     initial={{ y: 100, opacity: 0 }}
     animate={{ y: 0, opacity: 1 }}
     transition={{ delay: 2, duration: 1 }}
-    className="fixed bottom-8 md:bottom-10 left-1/2 transform -translate-x-1/2 z-50 w-max max-w-[95vw] pointer-events-auto"
+    className="fixed bottom-6 md:bottom-10 left-1/2 transform -translate-x-1/2 z-[60] w-[max-content] max-w-[95vw] pointer-events-auto"
   >
-    <div className="flex items-center gap-3 md:gap-5 px-6 py-3.5 md:px-8 md:py-4 bg-[#020817]/90 backdrop-blur-md border-2 border-cyan-400 rounded-full shadow-[0_0_40px_rgba(34,211,238,0.5)] hover:shadow-[0_0_60px_rgba(34,211,238,0.7)] transition-all duration-300 hover:-translate-y-1">
+    {/* ARCHITECT FIX: Tighter padding and gaps on mobile to prevent horizontal overflow cut-offs */}
+    <div className="flex items-center gap-2 md:gap-5 px-4 py-3 md:px-8 md:py-4 bg-[#020817]/90 backdrop-blur-md border-2 border-cyan-400 rounded-full shadow-[0_0_40px_rgba(34,211,238,0.5)] hover:shadow-[0_0_60px_rgba(34,211,238,0.7)] transition-all duration-300 hover:-translate-y-1">
       <a 
         href="https://x.com/supraEVM"
         target="_blank"
         rel="noopener noreferrer"
         className="group relative flex items-center justify-center transition-all duration-300 hover:scale-110"
       >
-        <X size={20} className="text-white group-hover:text-cyan-300 transition-colors md:w-6 md:h-6" />
+        <X size={18} className="text-white group-hover:text-cyan-300 transition-colors md:w-6 md:h-6" />
       </a>
       <a 
         href="https://t.me/supraEVM"
@@ -100,10 +101,10 @@ const ContactBar = () => (
         rel="noopener noreferrer"
         className="group relative flex items-center justify-center transition-all duration-300 hover:scale-110"
       >
-        <Send size={20} className="text-[#229ED9] group-hover:text-cyan-300 transition-colors -ml-0.5 mt-0.5 md:w-6 md:h-6" />
+        <Send size={18} className="text-[#229ED9] group-hover:text-cyan-300 transition-colors -ml-0.5 mt-0.5 md:w-6 md:h-6" />
       </a>
-      <div className="w-px h-6 md:h-8 bg-cyan-400/50 mx-1 md:mx-2" />
-      <span className="text-xs md:text-sm font-bold font-space uppercase tracking-[0.2em] text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]">
+      <div className="w-px h-5 md:h-8 bg-cyan-400/50 mx-1 md:mx-2" />
+      <span className="text-[10px] md:text-sm font-bold font-space uppercase tracking-[0.2em] text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)] whitespace-nowrap">
         Contact Supra
       </span>
     </div>
@@ -158,7 +159,7 @@ const AboutSection = () => (
   </section>
 );
 
-/* --- INTRO SCREEN (HEAVY RAIN UPGRADE) --- */
+/* --- INTRO SCREEN (HYPER-OPTIMIZED CSS ONLY) --- */
 const IntroScreen = ({ onEnter }) => {
   const canvasRef = useRef(null);
 
@@ -225,7 +226,6 @@ const IntroScreen = ({ onEnter }) => {
       });
 
       raindrops = raindrops.filter(drop => drop.y <= height);
-      
       animationId = requestAnimationFrame(animate);
     };
 
@@ -244,14 +244,11 @@ const IntroScreen = ({ onEnter }) => {
       key="intro"
       exit={{ opacity: 0 }}
       transition={{ duration: 1.2, ease: "easeInOut" }}
-      className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-[#02040a]"
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-[#010205]"
     >
+      {/* ZERO CPU COST CSS GRADIENT (Replaced the 50px blur image) */}
       <div className="absolute inset-0 w-full h-full z-0">
-        <div 
-          className="absolute inset-0 bg-cover bg-center" 
-          style={{ backgroundImage: "url('/samurai.jpg')", filter: 'blur(50px) brightness(0.3)', transform: 'scale(1.1)' }} 
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-950/90 via-cyan-950/80 to-blue-950/90 mix-blend-soft-light" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-cyan-900/20 via-[#010205] to-[#010205]" />
       </div>
       
       <div className="absolute inset-0 z-10 flex justify-end pointer-events-none">
@@ -262,11 +259,16 @@ const IntroScreen = ({ onEnter }) => {
           src="/samurai.jpg" 
           alt="Storm Warrior" 
           className="h-full w-auto object-cover md:w-[65vw] relative"
-          style={{ maskImage: 'linear-gradient(to right, transparent 0%, black 60%)', WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 60%)', filter: 'contrast(1.2) brightness(1.1) saturate(0.9)' }}
+          style={{ 
+            maskImage: 'linear-gradient(to right, transparent 0%, black 60%)', 
+            WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 60%)', 
+            filter: 'contrast(1.2) brightness(1.1) saturate(0.9)',
+            willChange: 'transform, opacity' 
+          }}
         />
       </div>
       
-      <canvas ref={canvasRef} className="absolute inset-0 z-20 pointer-events-none mix-blend-screen" />
+      <canvas ref={canvasRef} className="absolute inset-0 z-20 pointer-events-none mix-blend-screen" style={{ willChange: 'transform' }} />
       
       <div className="relative z-40 text-center p-4 w-full max-w-[95vw]">
         <div className="relative inline-block">
@@ -277,13 +279,12 @@ const IntroScreen = ({ onEnter }) => {
             className="text-5xl md:text-[8vw] font-black uppercase tracking-tight text-transparent bg-clip-text select-none relative z-10 leading-[0.9]"
             style={{ 
               fontFamily: '"Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif', 
-              backgroundImage: `linear-gradient(90deg, rgba(6, 182, 212, 0.4), rgba(59, 130, 246, 0.5), rgba(147, 51, 234, 0.3), rgba(6, 182, 212, 0.4)), url('https://images.unsplash.com/photo-1594750017192-3e284a0d9e29?q=80&w=2940&auto=format&fit=crop')`, 
-              backgroundSize: '200% 100%, 120%', 
-              backgroundPosition: 'center', 
-              backgroundBlendMode: 'overlay, normal', 
-              animation: 'liquid-storm-flow 8s linear infinite', 
+              /* ZERO NETWORK CSS GRADIENT TEXT (Replaced the 3K Unsplash image) */
+              backgroundImage: 'linear-gradient(90deg, #06b6d4 0%, #3b82f6 30%, #9333ea 70%, #06b6d4 100%)',
+              backgroundSize: '200% auto', 
+              animation: 'liquid-storm-flow 4s linear infinite', 
               WebkitTextStroke: '2px rgba(165, 243, 252, 0.5)', 
-              filter: `brightness(1.5) contrast(1.2) saturate(1.4) drop-shadow(0 0 15px rgba(6, 182, 212, 0.6)) drop-shadow(0 0 40px rgba(59, 130, 246, 0.4))` 
+              filter: `drop-shadow(0 0 15px rgba(6, 182, 212, 0.6))` 
             }}
           >
             Supra's<br className="md:hidden" />&nbsp;Coven
@@ -373,29 +374,23 @@ export default function App() {
   const urlParams = new URLSearchParams(window.location.search);
   const isArchitect = urlParams.get('access') === 'architect';
 
-  useEffect(() => {
-    const preloadImage = new Image();
-    preloadImage.src = 'https://images.unsplash.com/photo-1594750017192-3e284a0d9e29?q=80&w=2940&auto=format&fit=crop';
-  }, []);
+  // Deleted the preloadImage useEffect here to remove network bottleneck
 
   if (isArchitect) return <AdminDashboard />;
 
   const fetchWeeklyIntelligence = async () => {
     if (!supabase) {
-      console.error("Supabase client is not available. Check environment variables.");
+      console.error("Supabase client is not available.");
       setIsLoading(false);
       return;
     }
 
     try {
-      const { data, error } = await supabase
-        .from('weekly_intelligence')
-        .select('*');
-
+      const { data, error } = await supabase.from('weekly_intelligence').select('*');
       if (error) throw error;
       setProtocols(data || []);
     } catch (error) {
-      console.error("Error fetching data from Supabase:", error.message);
+      console.error("Error fetching data:", error.message);
       setProtocols([]);
     } finally {
       setIsLoading(false);
@@ -487,7 +482,7 @@ export default function App() {
 
         <AboutSection />
 
-        <section className="px-6 md:px-12 pb-[30vh] pt-10 md:pt-20 bg-gradient-to-b from-transparent via-[#02040a]/90 to-[#02040a] pointer-events-auto backdrop-blur-sm">
+        <section className="px-6 md:px-12 pb-[35vh] pt-10 md:pt-20 bg-gradient-to-b from-transparent via-[#02040a]/90 to-[#02040a] pointer-events-auto backdrop-blur-sm">
           <div className="max-w-7xl mx-auto">
             
             <div className="mb-10">
@@ -502,14 +497,6 @@ export default function App() {
                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
                      <Loader2 className="text-cyan-500/50 animate-spin mb-4" size={24} />
                      <span className="text-xs font-space text-gray-500 tracking-widest uppercase">Fetching DB</span>
-                   </div>
-                   <div className="p-6 bg-[#020817]/50 border border-white/5 rounded-xl hidden md:flex flex-col justify-center items-center h-48 relative overflow-hidden">
-                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" style={{ animationDelay: '0.2s' }} />
-                     <Loader2 className="text-purple-500/50 animate-spin mb-4" size={24} />
-                   </div>
-                   <div className="p-6 bg-[#020817]/50 border border-white/5 rounded-xl hidden md:flex flex-col justify-center items-center h-48 relative overflow-hidden">
-                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" style={{ animationDelay: '0.4s' }} />
-                     <Loader2 className="text-blue-500/50 animate-spin mb-4" size={24} />
                    </div>
                  </div>
                )}
@@ -592,17 +579,18 @@ export default function App() {
 
         <ContactBar />
         
+        {/* ARCHITECT FIX: Moved to bottom-right to prevent overlap with top text, acting as a clean floating action button */}
         <motion.button
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           whileHover={{ scale: 1.05, y: -5 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setIsDossierOpen(true)}
-          className="fixed top-6 right-6 md:top-auto md:bottom-8 md:right-8 z-50 bg-black/60 backdrop-blur-md border border-cyan-500/50 text-cyan-400 px-6 py-3.5 md:px-8 md:py-4 rounded-full shadow-[0_0_20px_rgba(6,182,212,0.2),inset_0_0_15px_rgba(6,182,212,0.1)] hover:shadow-[0_0_30px_rgba(6,182,212,0.4),inset_0_0_20px_rgba(6,182,212,0.2)] hover:border-cyan-300 hover:bg-cyan-950/40 transition-all duration-300 pointer-events-auto flex items-center justify-center gap-3 group"
+          className="fixed bottom-24 right-4 md:bottom-8 md:right-8 z-50 bg-black/60 backdrop-blur-md border border-cyan-500/50 text-cyan-400 px-5 py-3 md:px-8 md:py-4 rounded-full shadow-[0_0_20px_rgba(6,182,212,0.2),inset_0_0_15px_rgba(6,182,212,0.1)] hover:shadow-[0_0_30px_rgba(6,182,212,0.4),inset_0_0_20px_rgba(6,182,212,0.2)] hover:border-cyan-300 hover:bg-cyan-950/40 transition-all duration-300 pointer-events-auto flex items-center justify-center gap-2 md:gap-3 group"
           title="View My Communities"
         >
-          <Users size={20} className="group-hover:text-white transition-colors" />
-          <span className="font-space font-bold text-xs md:text-sm tracking-[0.2em] uppercase mt-0.5 group-hover:text-white transition-colors">
+          <Users size={18} className="group-hover:text-white transition-colors" />
+          <span className="font-space font-bold text-[10px] md:text-sm tracking-[0.2em] uppercase mt-0.5 group-hover:text-white transition-colors">
             My Communities
           </span>
         </motion.button>
