@@ -83,9 +83,11 @@ const ContactBar = () => (
     initial={{ y: 100, opacity: 0 }}
     animate={{ y: 0, opacity: 1 }}
     transition={{ delay: 2, duration: 1 }}
-    className="fixed bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2 z-50 w-max max-w-[95vw] pointer-events-auto"
+    // ARCHITECT FIX: Elevated to bottom-8 (mobile) and bottom-10 (desktop) to clear iOS/Android safe areas
+    className="fixed bottom-8 md:bottom-10 left-1/2 transform -translate-x-1/2 z-50 w-max max-w-[95vw] pointer-events-auto"
   >
-    <div className="flex items-center gap-3 md:gap-5 px-5 md:px-8 py-3 md:py-4 bg-[#020817] border-2 border-cyan-400 rounded-full shadow-[0_0_40px_rgba(34,211,238,0.5)] hover:shadow-[0_0_60px_rgba(34,211,238,0.7)] transition-all duration-300 hover:-translate-y-1">
+    {/* ARCHITECT FIX: Added backdrop-blur-md and refined padding for a perfect pill shape */}
+    <div className="flex items-center gap-3 md:gap-5 px-6 py-3.5 md:px-8 md:py-4 bg-[#020817]/90 backdrop-blur-md border-2 border-cyan-400 rounded-full shadow-[0_0_40px_rgba(34,211,238,0.5)] hover:shadow-[0_0_60px_rgba(34,211,238,0.7)] transition-all duration-300 hover:-translate-y-1">
       <a 
         href="https://x.com/supraEVM"
         target="_blank"
@@ -129,7 +131,6 @@ const AboutSection = () => (
         </div>
       </div>
 
-      {/* ARCHITECT FIX: Added mt-8 to prevent text from overlapping the profile image on narrow screens */}
       <h3 className="mt-8 text-4xl md:text-6xl font-syne font-extrabold text-white mb-6 md:mb-8 leading-[1.1] tracking-tight">
         Decoding the Signal <br />
         <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
@@ -463,7 +464,6 @@ export default function App() {
       
       {hasEntered && (
         <div className="fixed inset-0 z-0 pointer-events-auto">
-          {/* THE BLAST SHIELD: Stops 3D crashes from killing the React Root */}
           <ErrorBoundary>
             <React.Suspense fallback={<div className="absolute inset-0 bg-[#02040a]" />}>
               <Hero3D />
@@ -490,7 +490,6 @@ export default function App() {
 
         <AboutSection />
 
-        {/* ARCHITECT FIX: Added massive padding-bottom (pb-[30vh]) to allow the user to scroll entirely past the contact bar */}
         <section className="px-6 md:px-12 pb-[30vh] pt-10 md:pt-20 bg-gradient-to-b from-transparent via-[#02040a]/90 to-[#02040a] pointer-events-auto backdrop-blur-sm">
           <div className="max-w-7xl mx-auto">
             
@@ -596,7 +595,6 @@ export default function App() {
 
         <ContactBar />
         
-        {/* ARCHITECT FIX: Locked permanently to the Top-Right on mobile, Bottom-Right on Desktop. It will NEVER touch the Contact bar again. */}
         <motion.button
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
